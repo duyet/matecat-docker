@@ -1,0 +1,60 @@
+version: '2'
+
+networks:
+  matecat-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.1.0/24
+          ip_range: 172.18.1.0/24
+          gateway: 172.18.1.1
+
+services:
+  filters:
+    build: ./MateCatFilters/
+    container_name: docker_matecat_filter
+    ports:
+      - 8732:8732
+    networks:
+       - matecat-network
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+       - matecat-network
+
+  amq:
+    build: ./AMQ/
+    container_name: docker_amq
+    ports:
+      - 61613:61613
+      - 8161:8161
+    networks:
+       - matecat-network
+
+  mysql:
+    build: ./MySQL/
+    container_name: docker_mysql
+    ports:
+     - 3306:3306
+    networks:
+       - matecat-network
+
+  matecat:
+    build: ./MateCatApache/
+    container_name: docker_matecat
+    volumes:
+      - ~/matecat:/var/www/matecat:rw
+    ports:
+      - 80:80
+      - 7788:7788
+      - 22
+    networks:
+       - matecat-network
+    links:
+      - mysql
+      - redis
+      - amq
+      - filters
