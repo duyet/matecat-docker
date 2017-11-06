@@ -3,11 +3,6 @@ version: '2'
 networks:
   matecat-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.18.1.0/24
-          ip_range: 172.18.1.0/24
-          gateway: 172.18.1.1
 
 services:
   filters:
@@ -25,19 +20,11 @@ services:
     networks:
        - matecat-network
 
-  amq_duyet:
-    build: ./AMQ/
-    container_name: docker_amq
-    ports:
-      - 61613:61613
-      - 8161:8161
-    networks:
-       - matecat-network
-
   amq:
     image: webcenter/activemq:latest
     ports:
       - 61613:61613
+      - 61616:61616
       - 8161:8161
 
   mysql:
@@ -62,5 +49,5 @@ services:
     links:
       - mysql
       - redis
-      - amq_duyet
+      - amq
       - filters
