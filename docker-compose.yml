@@ -25,7 +25,7 @@ services:
     networks:
        - matecat-network
 
-  amq:
+  amq_duyet:
     build: ./AMQ/
     container_name: docker_amq
     ports:
@@ -33,6 +33,12 @@ services:
       - 8161:8161
     networks:
        - matecat-network
+
+  amq:
+    image: webcenter/activemq:latest
+    ports:
+      - 61613:61613
+      - 8161:8161
 
   mysql:
     build: ./MySQL/
@@ -56,5 +62,5 @@ services:
     links:
       - mysql
       - redis
-      - amq
+      - amq_duyet
       - filters

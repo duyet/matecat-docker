@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND noninteractive
 #    apt-get update
 
 RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" >> /etc/apt/sources.list && \
-	 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 && \
+	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 && \
 	apt-get update
 
 
