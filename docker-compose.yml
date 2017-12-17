@@ -37,6 +37,13 @@ services:
     networks:
        - matecat-network
 
+  mosesdecoder:
+    build: ./Moses/
+    ports:
+     - 8000:8080
+    networks:
+     - matecat-network
+
   matecat:
     build: ./MateCatApache/
     container_name: docker_matecat
@@ -53,3 +60,4 @@ services:
       - redis
       - amq
       - filters
+      - mosesdecoder

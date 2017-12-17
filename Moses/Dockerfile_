@@ -1,0 +1,51 @@
+FROM ostico/trusty-base:latest
+
+MAINTAINER Van-Duyet Le
+
+RUN apt-get update && apt-get install -q -y --no-install-recommends \
+	unzip \
+	make \
+	g++ \
+	wget \
+	git \
+	mercurial \
+	bzip2 \
+	autotools-dev \
+	automake \
+	libtool \
+	zlib1g-dev \
+	libbz2-dev \
+	libboost-all-dev \
+	libxmlrpc-core-c3-dev \
+	libxmlrpc-c++8-dev \
+	python-pip \
+	python-setuptools \
+	&& apt-get clean \ 
+        && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /home/moses
+WORKDIR /home/moses
+RUN mkdir moses-smt
+RUN mkdir moses-models
+
+
+RUN wget https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.gz
+RUN tar zxvf boost_1_64_0.tar.gz
+RUN cd boost_1_64_0/ && ./bootstrap.sh && \
+	./b2 -j4 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE
+
+RUN git clone https://github.com/moses-smt/mosesdecoder.git 
+RUN cd mosesdecoder && make -f contrib/Makefiles/install-dependencies.gmake && sh ./compile.sh
+WORKDIR /home/moses
+
+RUN wget -O giza-pp.zip http://github.com/moses-smt/giza-pp/archive/master.zip 
+RUN unzip giza-pp.zip
+RUN rm giza-pp.zip
+RUN mv giza-pp-master giza-pp
+WORKDIR /home/moses/giza-pp
+RUN make
+
+WORKDIR /home/moses
+
+
+
