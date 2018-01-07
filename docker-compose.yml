@@ -8,39 +8,39 @@ services:
   filters:
     build: ./MateCatFilters/
     container_name: docker_matecat_filter
-    ports:
-      - 8732:8732
+    expose:
+      - 8732
     networks:
        - matecat-network
 
   redis:
     image: redis
-    ports:
-      - 6379:6379
+    expose:
+      - 6379
     networks:
        - matecat-network
 
   amq:
     image: webcenter/activemq:latest
-    ports:
-      - 61613:61613
-      - 61616:61616
-      - 8161:8161
+    expose:
+      - 61613
+      - 61616
+      - 8161
     networks:
        - matecat-network
        
   mysql:
     build: ./MySQL/
     container_name: docker_mysql
-    ports:
-     - 3306:3306
+    expose:
+     - 3306
     networks:
        - matecat-network
 
   mosesdecoder:
     build: ./Moses/
-    ports:
-     - 8000:8080
+    expose:
+     - 8000
     networks:
      - matecat-network
 
@@ -50,9 +50,7 @@ services:
     volumes:
       - ~/matecat:/var/www/matecat:rw
     ports:
-      - 80:80
-      - 7788:7788
-      - 22
+      - 80
     networks:
        - matecat-network
     links:
