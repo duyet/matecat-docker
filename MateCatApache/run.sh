@@ -84,6 +84,8 @@ chown -R ${USER_OWNER} ./inc
 chown -R ${USER_OWNER} ./lib
 chown -R ${USER_OWNER} ./public
 chown -R ${USER_OWNER} ./support_scripts
+chown -R ${USER_OWNER} ./local_storage
+chmod -R 777 ./local_storage
 chown ${USER_OWNER} ./index.php
 
 ## Aache/PHPConfigurations
